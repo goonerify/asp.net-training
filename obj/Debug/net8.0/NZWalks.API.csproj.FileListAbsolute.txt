@@ -144,3 +144,5 @@ E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\NZWalks.API.sta
 E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\staticwebassets\msbuild.NZWalks.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
 E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\obj\Debug\net8.0\NZWalks.API.sourcelink.json
+E:\Training\C# .NET\NZWalks\NZWalks\NZWalks.API\bin\Debug\net8.0\AutoMapper.dll
