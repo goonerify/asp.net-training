@@ -9,17 +9,17 @@ namespace NZWalks.API.Mappings
 		public AutoMapperProfiles()
 		{
 			CreateMap<Region, RegionDto>().ReverseMap();
-			CreateMap<AddRegionDto, Region>()
+			CreateMap<AddRegionRequestDto, Region>()
 				// NOTE: Ignore a single property, but it's not needed
 				// in this case because it's actually the Region domain
 				// that has an Id property
 				//.ForMember(i => i.Id, opt => opt.Ignore())
 				.ReverseMap();
-			CreateMap<UpdateRegionDto, Region>().ReverseMap();
-			CreateMap<AddWalksDto, Walk>().ReverseMap();
+			CreateMap<UpdateRegionRequestDto, Region>().ReverseMap();
+			CreateMap<AddWalksRequestDto, Walk>().ReverseMap();
 			CreateMap<Walk, WalkDto>().ReverseMap();
 			CreateMap<Difficulty, DifficultyDto>().ReverseMap();
-			CreateMap<UpdateWalkDto, Walk>().ReverseMap();
+			CreateMap<UpdateWalkRequestDto, Walk>().ReverseMap();
 		}
 	}
 }

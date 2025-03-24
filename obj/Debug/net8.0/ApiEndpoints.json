@@ -19,7 +19,7 @@
     "Parameters": [
       {
         "Name": "addRegionDto",
-        "Type": "NZWalks.API.Models.DTO.AddRegionDto",
+        "Type": "NZWalks.API.Models.DTO.AddRegionRequestDto",
         "IsRequired": true
       }
     ],
@@ -51,7 +51,7 @@
     "Parameters": [
       {
         "Name": "updateRegionDto",
-        "Type": "NZWalks.API.Models.DTO.UpdateRegionDto",
+        "Type": "NZWalks.API.Models.DTO.UpdateRegionRequestDto",
         "IsRequired": true
       },
       {
@@ -98,7 +98,7 @@
     "Parameters": [
       {
         "Name": "addWalksDto",
-        "Type": "NZWalks.API.Models.DTO.AddWalksDto",
+        "Type": "NZWalks.API.Models.DTO.AddWalksRequestDto",
         "IsRequired": true
       }
     ],
@@ -145,7 +145,7 @@
       },
       {
         "Name": "updateWalkDto",
-        "Type": "NZWalks.API.Models.DTO.UpdateWalkDto",
+        "Type": "NZWalks.API.Models.DTO.UpdateWalkRequestDto",
         "IsRequired": true
       }
     ],

@@ -42,7 +42,7 @@ namespace NZWalks.API.Repositories
 			return await context.Walks.Include(x => x.Difficulty).Include("Region").FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<Walk?> UpdateAsync(Guid id, UpdateWalkDto updateWalkDto)
+		public async Task<Walk?> UpdateAsync(Guid id, UpdateWalkRequestDto updateWalkDto)
 		{
 			var walk = await context.Walks.FindAsync(id);
 
