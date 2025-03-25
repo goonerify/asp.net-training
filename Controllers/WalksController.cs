@@ -41,13 +41,16 @@ namespace NZWalks.API.Controllers
 		}
 
 		// Get Walks
-		// GET: /api/walks
+		// GET: /api/walks?filterOn=name&filterQuery=foo&sortBy=name&isAscending=true&pageSize=10&pageNumber=1
 		[HttpGet]
-		public async Task<IActionResult> GetAll()
+		// TODO: IMPORTANT: Define domain values for filterOn, sortBy that will be displayed in Swagger
+		// https://medium.com/@niteshsinghal85/multiple-example-for-parameters-in-swagger-with-asp-net-core-c4f3aaf1ae9f
+		public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, 
+			[FromQuery] string? sortBy, [FromQuery] bool isAscending = true, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
 		{
 			try
 			{
-				var walks = await walkRepository.GetAllAsync();
+				var walks = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending, pageNumber, pageSize);
 				var walksDto = mapper.Map<List<WalkDto>>(walks);
 				return Ok(walksDto);
 			}

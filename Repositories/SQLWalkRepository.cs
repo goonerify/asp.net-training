@@ -30,11 +30,38 @@ namespace NZWalks.API.Repositories
 			return walk;
 		}
 
-		public async Task<List<Walk>> GetAllAsync()
+		public async Task<List<Walk>> GetAllAsync(string? filterOn, string? filterQuery, string? sortBy, 
+			bool isAscending, int pageNumber, int pageSize)
 		{
 			// Include information for Difficulty and Region using thd difficultyId and regionId
 			// Both Include calls are the same, but the first is type safe
-			return await context.Walks.Include(x => x.Difficulty).Include("Region").ToListAsync();
+			IQueryable<Walk> walks = context.Walks.Include(x => x.Difficulty).Include("Region");
+
+			// filtering
+			if (!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+			{
+
+				if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+				{
+					walks = walks.Where(x => x.Name.Contains(filterQuery));
+				}
+			}
+
+			// sorting
+			if (!string.IsNullOrWhiteSpace(sortBy))
+			{
+				if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase)) {
+					walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
+				} else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase)) {
+					walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
+				}
+			}
+
+			// pagination
+			var skipResults = (pageNumber - 1) * pageSize;
+
+			return await walks.Skip(skipResults).Take(pageSize).ToListAsync();
+			//return await context.Walks.Include(x => x.Difficulty).Include("Region").ToListAsync();
 		}
 
 		public async Task<Walk?> GetByIdAsync(Guid id)
