@@ -7,9 +7,18 @@ using Microsoft.OpenApi.Models;
 using NZWalks.API.Data;
 using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logger = new LoggerConfiguration()
+	.WriteTo.Console()
+	.MinimumLevel.Information()
+	.CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -52,7 +61,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
-builder.Services.AddDbContext<NZWalksAuthDbContext>(options => 
+builder.Services.AddDbContext<NZWalksAuthDbContext>(options =>
 	options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConnectionString")));
 
 //builder.Services.AddScoped<IRegionRepository, InMemoryRepository>();
@@ -90,7 +99,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 // Add JWT authentication scheme
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters {
+	.AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
+	{
 		ValidateIssuer = true,
 		ValidateAudience = true,
 		ValidateLifetime = true,
@@ -118,7 +128,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Serve static files from the Images folder
-app.UseStaticFiles(new StaticFileOptions {
+app.UseStaticFiles(new StaticFileOptions
+{
 	FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
 	// E.g https://localhost:5001/Images
 	RequestPath = "/Images"
