@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Models.Domain;
@@ -16,6 +17,7 @@ namespace NZWalks.API.Controllers
 		// POST: /api/walks
 		[HttpPost]
 		[ValidateModel] // ValidateModelAttribute Custom Action Filter
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Create([FromBody] AddWalksRequestDto addWalksDto)
 		{
 			try
@@ -43,8 +45,10 @@ namespace NZWalks.API.Controllers
 		// Get Walks
 		// GET: /api/walks?filterOn=name&filterQuery=foo&sortBy=name&isAscending=true&pageSize=10&pageNumber=1
 		[HttpGet]
+		[Authorize(Roles = "Reader")]
 		// TODO: IMPORTANT: Define domain values for filterOn, sortBy that will be displayed in Swagger
 		// https://medium.com/@niteshsinghal85/multiple-example-for-parameters-in-swagger-with-asp-net-core-c4f3aaf1ae9f
+		// otherwise, investigate swaggergen to see if it can be done
 		public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery, 
 			[FromQuery] string? sortBy, [FromQuery] bool isAscending = true, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
 		{
@@ -62,6 +66,7 @@ namespace NZWalks.API.Controllers
 
 		[HttpGet]
 		[Route("{id:Guid}")]
+		[Authorize(Roles = "Reader")]
 		public async Task<IActionResult> GetById([FromRoute] Guid id)
 		{
 			try
@@ -84,6 +89,7 @@ namespace NZWalks.API.Controllers
 		[HttpPut]
 		[Route("{id:Guid}")]
 		[ValidateModel] // ValidateModelAttribute Custom Action Filter
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkDto)
 		{
 			try
@@ -111,6 +117,7 @@ namespace NZWalks.API.Controllers
 
 		[HttpDelete]
 		[Route("{id:Guid}")]
+		[Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Delete([FromRoute] Guid id)
 		{
 			try
