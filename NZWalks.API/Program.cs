@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NZWalks.API.Data;
 using NZWalks.API.Mappings;
+using NZWalks.API.Middleware;
 using NZWalks.API.Repositories;
 using Serilog;
 using System.Text;
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var logger = new LoggerConfiguration()
 	.WriteTo.Console()
+	.WriteTo.File($"Logs{Path.DirectorySeparatorChar}log.txt", rollingInterval: RollingInterval.Day)
 	.MinimumLevel.Information()
 	.CreateLogger();
 
@@ -120,11 +122,12 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 
 // Add authentication middleware with JWT authentication scheme
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 // Serve static files from the Images folder

@@ -8,47 +8,43 @@ namespace NZWalks.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class ImagesController(IImageRepository imageRepository) : ControllerBase
+	public class ImagesController(
+		IImageRepository imageRepository,
+		ILogger<RegionsController> logger) : ControllerBase
 	{
 		// POST: /api/images/upload
 		[HttpPost]
 		[Route("upload")]
-		public async Task<IActionResult> Upload([FromForm] ImageUploadRequestDto request) {
-			try
+		public async Task<IActionResult> Upload([FromForm] ImageUploadRequestDto request)
+		{
+			ValidateFileUpload(request);
+
+			if (!ModelState.IsValid)
 			{
-				ValidateFileUpload(request);
-
-				if (!ModelState.IsValid)
-				{
-					return BadRequest(ModelState);
-				}
-
-				// Convert dto to domain model
-				var imageDomainModel = new Image
-				{
-					File = request.File,
-					FileExtension = Path.GetExtension(request.File.FileName),
-					FileSizeInBytes = request.File.Length,
-					FileName = request.FileName,
-					FileDescription = request.FileDescription,
-				};
-
-				await imageRepository.UploadImageAsync(imageDomainModel);
-
-				// Use repository to upload image
-				return Ok();
+				return BadRequest(ModelState);
 			}
-			catch
+
+			// Convert dto to domain model
+			var imageDomainModel = new Image
 			{
-				return StatusCode(StatusCodes.Status500InternalServerError, "Upload image server error");
-			}
+				File = request.File,
+				FileExtension = Path.GetExtension(request.File.FileName),
+				FileSizeInBytes = request.File.Length,
+				FileName = request.FileName,
+				FileDescription = request.FileDescription,
+			};
+
+			await imageRepository.UploadImageAsync(imageDomainModel);
+
+			// Use repository to upload image
+			return Ok();
 		}
 
 		private void ValidateFileUpload(ImageUploadRequestDto request)
 		{
-			var allowedExtensions = new[] {".jpg", ".jpeg", ".png" };
+			var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
 
-			if(!allowedExtensions.Contains(Path.GetExtension(request.File.FileName)))
+			if (!allowedExtensions.Contains(Path.GetExtension(request.File.FileName)))
 			{
 				ModelState.AddModelError("File", "Invalid file extension. Only .jpg, .jpeg, .png are allowed.");
 			}

@@ -9,44 +9,41 @@ namespace NZWalks.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository) : ControllerBase
+	public class AuthController(
+		UserManager<IdentityUser> userManager,
+		ITokenRepository tokenRepository,
+		ILogger<RegionsController> logger) : ControllerBase
 	{
 		// POST: https://localhost:portnumber/api/auth/register
 		[HttpPost]
 		[Route("register")]
 		public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
 		{
-			try
+			var user = new IdentityUser
 			{
-				var user = new IdentityUser
-				{
-					UserName = registerRequestDto.Username,
-					Email = registerRequestDto.Username
-				};
+				UserName = registerRequestDto.Username,
+				Email = registerRequestDto.Username
+			};
 
-				var identityResult = await userManager.CreateAsync(user, registerRequestDto.Password);
+			var identityResult = await userManager.CreateAsync(user, registerRequestDto.Password);
 
-				if (identityResult.Succeeded)
+			if (identityResult.Succeeded)
+			{
+				// Add roles to user
+				if (registerRequestDto.Roles != null && registerRequestDto.Roles.Length != 0)
 				{
-					// Add roles to user
-					if (registerRequestDto.Roles != null && registerRequestDto.Roles.Length != 0)
+					identityResult = await userManager.AddToRolesAsync(user, registerRequestDto.Roles);
+
+					if (identityResult.Succeeded)
 					{
-						identityResult = await userManager.AddToRolesAsync(user, registerRequestDto.Roles);
-
-						if (identityResult.Succeeded)
-						{
-							return Created();
-						}
+						return Created();
 					}
-
 				}
-				
-				return BadRequest("Something went wrong");
+
 			}
-			catch (Exception ex)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-			}
+
+			logger.LogWarning($"Register Error: Bad Request");
+			return BadRequest("Something went wrong");
 		}
 
 		// POST: https://localhost:portnumber/api/auth/login
@@ -54,34 +51,27 @@ namespace NZWalks.API.Controllers
 		[Route("login")]
 		public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
 		{
-			try
-			{
-				var user = await userManager.FindByNameAsync(loginRequestDto.Username);
+			var user = await userManager.FindByNameAsync(loginRequestDto.Username);
 
-				if (user != null && await userManager.CheckPasswordAsync(user, loginRequestDto.Password))
+			if (user != null && await userManager.CheckPasswordAsync(user, loginRequestDto.Password))
+			{
+				// Get roles for user
+				var roles = await userManager.GetRolesAsync(user);
+
+				if (roles != null)
 				{
-					// Get roles for user
-					var roles = await userManager.GetRolesAsync(user);
-
-					if (roles != null)
+					// Generate token
+					var token = tokenRepository.CreateJWTToken(user, [.. roles]);
+					var response = new LoginResponseDto()
 					{
-						// Generate token
-						var token = tokenRepository.CreateJWTToken(user, [.. roles]);
-						var response = new LoginResponseDto()
-						{
-							JwtToken = token
-						};
+						JwtToken = token
+					};
 
-						return Ok(response);
-					}
+					return Ok(response);
 				}
+			}
 
-				return Unauthorized();
-			}
-			catch (Exception ex)
-			{
-				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-			}
+			return Unauthorized();
 		}
 	}
 }

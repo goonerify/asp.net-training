@@ -15,8 +15,8 @@ namespace NZWalks.API.Repositories
 			await image.File.CopyToAsync(stream);
 
 			// E.g https://localhost:5001/Images/image.jpg
-			var urlFilePath = $"{httpContextAccessor.HttpContext.Request.Scheme}://" + 
-				$"{httpContextAccessor.HttpContext.Request.Host}{httpContextAccessor.HttpContext.Request.PathBase}" + 
+			var urlFilePath = $"{httpContextAccessor.HttpContext?.Request.Scheme}://" + 
+				$"{httpContextAccessor.HttpContext?.Request.Host}{httpContextAccessor.HttpContext?.Request.PathBase}" + 
 				$"/Images/{image.FileName}{image.FileExtension}";
 
 			image.FilePath = urlFilePath;
