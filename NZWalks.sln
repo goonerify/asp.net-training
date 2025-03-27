@@ -5,8 +5,6 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NZWalks.API", "NZWalks.API\NZWalks.API.csproj", "{77E6F048-5612-4469-85BC-41D0BD6C0843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web-API-Versioning.API", "Web-API-Versioning.API\Web-API-Versioning.API.csproj", "{2AD8C20D-CC3B-4720-91ED-E68B290EEB21}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{77E6F048-5612-4469-85BC-41D0BD6C0843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77E6F048-5612-4469-85BC-41D0BD6C0843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77E6F048-5612-4469-85BC-41D0BD6C0843}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AD8C20D-CC3B-4720-91ED-E68B290EEB21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AD8C20D-CC3B-4720-91ED-E68B290EEB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AD8C20D-CC3B-4720-91ED-E68B290EEB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AD8C20D-CC3B-4720-91ED-E68B290EEB21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

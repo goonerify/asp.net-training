@@ -28,7 +28,7 @@ builder.Logging.AddSerilog(logger);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Add versioning
+// Add versioning. Currently only used in the WeatherForecastController
 // NOTE: The nuget packages Microsoft.AspNetCore.Mvc.Versioning and microsoft.aspnetcore.mvc.versioning.apiexplorer are deprecated
 // See https://stackoverflow.com/q/76371992/1445318
 builder.Services.AddApiVersioning(options =>
