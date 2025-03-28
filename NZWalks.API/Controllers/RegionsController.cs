@@ -20,7 +20,7 @@ namespace NZWalks.API.Controllers
 
 		// https://localhost:portnumber/api/regions
 		[HttpGet]
-		[Authorize(Roles = "Reader")]
+		// [Authorize(Roles = "Reader")]
 		public async Task<IActionResult> GetAll()
 		{
 			// Get data from Database - Domain models
@@ -37,7 +37,7 @@ namespace NZWalks.API.Controllers
 		// https://localhost:portnumber/api/regions
 		[HttpGet]
 		[Route("{id:Guid}")]
-		[Authorize(Roles = "Reader")]
+		// [Authorize(Roles = "Reader")]
 		public async Task<IActionResult> GetById([FromRoute] Guid id)
 		{
 			// NOTE: Find can only be used with the Id property
@@ -66,7 +66,7 @@ namespace NZWalks.API.Controllers
 
 		[HttpPost]
 		[ValidateModel] // ValidateModelAttribute Custom Action Filter
-		[Authorize(Roles = "Writer")]
+		// [Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addRegionDto)
 		{
 			//if(!ModelState.IsValid)
@@ -101,7 +101,7 @@ namespace NZWalks.API.Controllers
 		[HttpPut]
 		[Route("{id:Guid}")]
 		[ValidateModel] // ValidateModelAttribute Custom Action Filter
-		[Authorize(Roles = "Writer")]
+		// [Authorize(Roles = "Writer")]
 		public async Task<IActionResult> Update([FromBody] UpdateRegionRequestDto updateRegionDto, [FromRoute] Guid id)
 		{
 			var region = await regionRepository.UpdateAsync(id, updateRegionDto);
@@ -127,7 +127,7 @@ namespace NZWalks.API.Controllers
 
 		[HttpDelete]
 		[Route("{id:Guid}")]
-		[Authorize(Roles = "Writer, Reader")]
+		// [Authorize(Roles = "Writer, Reader")]
 		public async Task<IActionResult> Delete([FromRoute] Guid id)
 		{
 			var region = await regionRepository.DeleteAsync(id);
