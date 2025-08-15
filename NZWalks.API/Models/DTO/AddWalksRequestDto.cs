@@ -9,7 +9,7 @@ namespace NZWalks.API.Models.DTO
 		public required string Name { get; set; }
 
 		[Required]
-		[MaxLength(1000, ErrorMessage = "Description must me a max of 500 chars")]
+		[MaxLength(500, ErrorMessage = "Description must me a max of 500 chars")]
 		public required string Description { get; set; }
 
 		[Required]
@@ -25,3 +25,4 @@ namespace NZWalks.API.Models.DTO
 		public Guid RegionId { get; set; }
 	}
 }
+
